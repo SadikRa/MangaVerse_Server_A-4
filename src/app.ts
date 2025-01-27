@@ -7,7 +7,8 @@ import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
-import router from './app/routes';
+import { ProductRoutes } from './app/models/Product/Product.Route';
+import { OrderRoutes } from './app/models/Order/Order.Route';
 
 const app: Application = express();
 
@@ -18,7 +19,8 @@ app.use(cookieParser());
 app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 
 // application routes
-app.use('/api/v1', router);
+app.use('/api', ProductRoutes);
+app.use('/api', OrderRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hi Next Level Developer !');

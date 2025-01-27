@@ -1,5 +1,6 @@
-import { Product } from '../bookShopInterface/Product.Interface';
-import { ProductModel } from '../bookShopModel/Product.Model';
+import { Product } from "./Product.Interface";
+import { ProductModel } from "./Product.Model";
+
 
 // create a book
 const createBookIntoDB = async (book: Product) => {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { productControllers } from '../bookShopControllers/Product.Controllers';
+import { productControllers } from './Product.Controllers';
 
 const router = express.Router();
 //post a book 

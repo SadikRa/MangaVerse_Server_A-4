@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { OrderServices } from '../bookShopServices/Order.Services';
-import { orderValidationSchema } from '../validation/orderValidation';
+import { orderValidationSchema } from './orderValidation';
+import { OrderServices } from './Order.Services';
+
 
 //Order a book
 const OrderABook = async (req: Request, res: Response) => {

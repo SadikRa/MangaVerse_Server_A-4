@@ -1,6 +1,6 @@
-import { Order } from '../bookShopInterface/Order.Interface';
-import { OrderModel } from '../bookShopModel/Order.Model';
-import { ProductModel } from '../bookShopModel/Product.Model';
+import { ProductModel } from "../Product/Product.Model";
+import { Order } from "./Order.Interface";
+import { OrderModel } from "./Order.Model";
 
 //order a book
 const OrderABook = async (order: Order) => {

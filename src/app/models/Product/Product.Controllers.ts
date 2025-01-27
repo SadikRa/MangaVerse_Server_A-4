@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
-import { ProductServices } from '../bookShopServices/Product.Services';
-import {
-  productValidationSchema,
-  updateProductValidationSchema,
-} from '../validation/productValidation';
+
 import Joi from 'joi';
+import { productValidationSchema, updateProductValidationSchema } from './productValidation';
+import { ProductServices } from './Product.Services';
 
 ///create a book
 const createBook = async (req: Request, res: Response) => {
