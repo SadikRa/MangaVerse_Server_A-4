@@ -1,57 +1,45 @@
 import { Request, Response } from 'express';
 import { orderValidationSchema } from './orderValidation';
 import { OrderServices } from './Order.Services';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import { StatusCodes } from 'http-status-codes';
 
-
-//Order a book
-const OrderABook = async (req: Request, res: Response) => {
-  try {
-    // Validate request body
-    const { error } = orderValidationSchema.validate(req.body);
-    if(error){
-      res.status(400).json({
-        success: false,
-        message: 'Validation failed',
-        error: error.details,
-      });
-    }
-
-    const orderData = req.body;
-
-    const result = await OrderServices.OrderABook(orderData);
-
-    res.status(200).json({
-      success: true,
-      message: 'Order created successfully',
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    res.status(400).json({
+// Order a book
+const OrderABook = catchAsync(async (req, res) => {
+  // Validate request body
+  const { error } = orderValidationSchema.validate(req.body);
+  if (error) {
+    return sendResponse(res, {
+      statusCode: StatusCodes.BAD_REQUEST,
       success: false,
-      message: error.message || 'Something went wrong',
+      message: 'Validation failed',
+      data: error.details,
     });
   }
-};
 
-///
-const CalculateRevenueOrders = async (req: Request, res: Response) => {
-  try {
-    const totalRevenue = await OrderServices.CalculateRevenueOrders();
+  const orderData = req.body;
+  const result = await OrderServices.OrderABook(orderData);
 
-    res.status(200).json({
-      message: 'Revenue calculated successfully',
-      status: true,
-      data: { totalRevenue },
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: 'Something went wrong',
-      status: false,
-      error,
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Order created successfully',
+    data: result,
+  });
+});
+
+// Calculate revenue from orders
+const CalculateRevenueOrders = catchAsync(async (req, res) => {
+  const totalRevenue = await OrderServices.CalculateRevenueOrders();
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Revenue calculated successfully',
+    data: { totalRevenue },
+  });
+});
 
 export const OrderControllers = {
   OrderABook,
