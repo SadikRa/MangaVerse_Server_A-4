@@ -1,8 +1,4 @@
 import Joi from 'joi';
-import {
-  productValidationSchema,
-  updateProductValidationSchema,
-} from './productValidation';
 import { ProductServices } from './Product.Services';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -10,16 +6,6 @@ import { StatusCodes } from 'http-status-codes';
 
 // Create a book
 const createBook = catchAsync(async (req, res) => {
-  const { error } = productValidationSchema.validate(req.body);
-  if (error) {
-    return sendResponse(res, {
-      statusCode: StatusCodes.BAD_REQUEST,
-      success: false,
-      message: 'Validation failed',
-      data: error.details,
-    });
-  }
-
   const productData = req.body;
   const result = await ProductServices.createBookIntoDB(productData);
 
@@ -58,16 +44,6 @@ const GetABook = catchAsync(async (req, res) => {
 
 // Update a book
 const UpdateABook = catchAsync(async (req, res) => {
-  const { error } = updateProductValidationSchema.validate(req.body);
-  if (error) {
-    return sendResponse(res, {
-      statusCode: StatusCodes.BAD_REQUEST,
-      success: false,
-      message: 'Validation failed',
-      data: error.details,
-    });
-  }
-
   const { productId } = req.params;
   const book = req.body;
   const result = await ProductServices.UpdateABook(productId, book);

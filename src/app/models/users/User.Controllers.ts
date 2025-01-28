@@ -4,13 +4,17 @@ import sendResponse from '../../utils/sendResponse';
 import { UserService } from './User.Services';
 
 const createUser = catchAsync(async (req, res) => {
-  const user = req.body;
-  const result = UserService.createUserIntoDB(user);
+  const userData = req.body;
+  console.log(userData);
+
+  const result = await UserService.createUserIntoDB(userData);
+
+  console.log(result);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'user Created done',
+    message: 'User created successfully',
     data: result,
   });
 });

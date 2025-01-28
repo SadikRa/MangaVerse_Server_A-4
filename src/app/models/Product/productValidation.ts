@@ -1,5 +1,6 @@
 import Joi from 'joi';
 
+// Validation schema for creating a product
 export const productValidationSchema = Joi.object({
   id: Joi.string().optional(),
   title: Joi.string().trim().required().messages({
@@ -38,6 +39,7 @@ export const productValidationSchema = Joi.object({
   }),
 });
 
+// Validation schema for updating a product
 export const updateProductValidationSchema = Joi.object({
   price: Joi.number().min(0).optional().messages({
     'number.base': 'Price must be a number.',
@@ -47,8 +49,4 @@ export const updateProductValidationSchema = Joi.object({
     'number.base': 'Quantity must be a number.',
     'number.min': 'Quantity must be at least 0.',
   }),
-})
-  .or('price', 'quantity')
-  .messages({
-    'object.missing': 'At least one of "price" or "quantity" must be provided.',
-  });
+});
