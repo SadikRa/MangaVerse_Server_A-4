@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import { orderValidationSchema } from './orderValidation';
 import { OrderServices } from './Order.Services';
 import catchAsync from '../../utils/catchAsync';
