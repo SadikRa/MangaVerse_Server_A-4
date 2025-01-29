@@ -1,6 +1,6 @@
-import { ProductModel } from "../Product/Product.Model";
-import { Order } from "./Order.Interface";
-import { OrderModel } from "./Order.Model";
+import { ProductModel } from '../Product/Product.Model';
+import { Order } from './Order.Interface';
+import { OrderModel } from './Order.Model';
 
 //order a book
 const OrderABook = async (order: Order) => {
@@ -24,19 +24,19 @@ const OrderABook = async (order: Order) => {
 
 //Calculate Revenue Orders
 const CalculateRevenueOrders = async () => {
-    const result = await OrderModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          totalRevenue: { $sum: { $multiply: ["$totalPrice", 1] } },
-        },
+  const result = await OrderModel.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: { $multiply: ['$totalPrice', 1] } },
       },
-    ]);
-  
-    return result.length > 0 ? result[0].totalRevenue : 0;
-  };
+    },
+  ]);
+
+  return result.length > 0 ? result[0].totalRevenue : 0;
+};
 
 export const OrderServices = {
   OrderABook,
-  CalculateRevenueOrders
+  CalculateRevenueOrders,
 };

@@ -1,6 +1,6 @@
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
-import { AuthValidation } from './auth.validation';
+import { AuthValidation } from './Auth.Validation';
 
 const router = express.Router();
 
@@ -10,5 +10,4 @@ router.post(
   validateRequest(AuthValidation.loginValidationSchema),
 );
 
- 
-export const AuthRouters = router
+export const AuthRouters = router;
