@@ -1,7 +1,8 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 import config from '../../config';
-import { TUser } from './User.Interface';
+import { TUser, UserModelInterface } from './User.Interface';
+
 
 // Extend TUser with Mongoose Document to include Mongoose-specific methods
 interface IUserDocument extends TUser, Document {
@@ -9,7 +10,7 @@ interface IUserDocument extends TUser, Document {
   isModified(path?: string): boolean;
 }
 
-const userSchema = new Schema<IUserDocument>(
+const userSchema = new Schema<IUserDocument, UserModelInterface>(
   {
     name: {
       type: String,
@@ -62,4 +63,15 @@ userSchema.pre<IUserDocument>('save', async function (next) {
   next();
 });
 
-export const UserModel = model<IUserDocument>('User', userSchema);
+userSchema.statics.isUserExistsByEmail = async function (email: string) {
+  return await UserModel.findOne({ email }).select('+password');
+};
+
+userSchema.statics.isUserPasswordMatch = async function (TextPass, hasPass) {
+  return await bcrypt.compare(TextPass, hasPass);
+};
+
+export const UserModel = model<IUserDocument, UserModelInterface>(
+  'User',
+  userSchema,
+);

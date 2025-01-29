@@ -17,7 +17,28 @@ export const productValidationSchema = Joi.object({
     'any.required': 'Price is required.',
   }),
   category: Joi.string()
-    .valid('Fiction', 'Science', 'SelfDevelopment', 'Poetry', 'Religious')
+    .valid(
+      'Shonen',
+      'Shojo',
+      'Seinen',
+      'Slice of life',
+      'Sports manga',
+      'Josei',
+      'Isekai',
+      'Mecha',
+      'Fantasy',
+      'Sci-Fi',
+      'Horror',
+      'Psychological',
+      'Mystery',
+      'Thriller',
+      'Romance',
+      'Supernatural',
+      'Historical',
+      'Adventure',
+      'Comedy',
+      'Drama',
+    )
     .required()
     .messages({
       'any.only':

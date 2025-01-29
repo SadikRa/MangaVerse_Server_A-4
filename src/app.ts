@@ -6,8 +6,8 @@ import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import { ProductRoutes } from './app/models/Product/Product.Route';
 import { OrderRoutes } from './app/models/Order/Order.Route';
 import { UserRouters } from './app/models/users/User.Route';
-import { AuthRouters } from './app/models/Auth/Auth.Route';
 import notFound from './app/middlewares/notFound';
+import { AuthRouters } from './app/models/Auth/Auth.Route';
 
 const app: Application = express();
 
@@ -19,9 +19,17 @@ app.use(cookieParser());
 app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 
 // Application routes
+
+//product
 app.use('/api/product', ProductRoutes);
+
+// order
 app.use('/api/order', OrderRoutes);
+
+//users
 app.use('/api/users', UserRouters);
+
+//auth
 app.use('/api/auth', AuthRouters);
 
 // Default route
