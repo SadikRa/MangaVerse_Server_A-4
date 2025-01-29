@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import AppError from '../../errors/AppError';
 import { UserModel } from '../users/User.Model';
 import { TLoginUser } from './Auth.Interface';
+import config from '../../config';
+import { createToken } from './Auth.Utils';
 
 const loginUser = async (payload: TLoginUser) => {
   // Check if the payload contains the required fields
@@ -36,8 +38,31 @@ const loginUser = async (payload: TLoginUser) => {
     throw new AppError(StatusCodes.FORBIDDEN, 'Invalid password');
   }
 
+  // create token sent 
+
+  const jwtPayload = {
+    email: user?.email,
+    role: user?.role
+  }
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expires_in as string,
+  );
+
+
   // If everything is fine, return a success response or token
-  return {};
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
 export const AuthServices = {
