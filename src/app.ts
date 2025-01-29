@@ -26,7 +26,7 @@ app.use('/api/auth', AuthRouters);
 
 // Default route
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hi Next Level Developer !');
+  res.send('Hello Sadik !');
 });
 
 // Global error handler
