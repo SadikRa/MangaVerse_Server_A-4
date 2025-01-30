@@ -4,32 +4,52 @@ import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../errors/AppError';
 import config from '../config';
+import { TUserRole } from '../models/users/User.Interface';
+import { UserModel } from '../models/users/User.Model';
 
-const auth = () => {
+const auth = (...requiredRole: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
 
     if (!token) {
-      throw new AppError(StatusCodes.UNAUTHORIZED, 'you are not UNAUTHORIZED');
+      throw new AppError(StatusCodes.UNAUTHORIZED, 'you are UNAUTHORIZED');
     }
 
-    jwt.verify(
+    //checking if the token valid
+
+    const decoded = jwt.verify(
       token,
       config.jwt_access_secret as string,
-      function (err, decoded) {
-        if (err) {
-          throw new AppError(
-            StatusCodes.UNAUTHORIZED,
-            'you are not UNAUTHORIZED',
-          );
-        }
+    ) as JwtPayload;
 
-        //decoded
-        req.user = decoded as JwtPayload;
+    const {role , email} = decoded; 
 
-        next();
-      },
-    );
+    // Check if the user exists
+    const user = await UserModel.isUserExistsByEmail(email);
+
+    if (!user) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+    }
+
+    // Check if the user is deleted
+    const isDeleted = user?.isDeleted;
+    if (isDeleted) {
+      throw new AppError(StatusCodes.FORBIDDEN, 'This user is deleted');
+    }
+
+    // Check if the user is blocked
+    const isBlocked = user?.isBlocked;
+    if (isBlocked) {
+      throw new AppError(StatusCodes.FORBIDDEN, 'This user is blocked');
+    }
+
+    if (requiredRole && !requiredRole.includes(role)) {
+      throw new AppError(StatusCodes.UNAUTHORIZED, 'you are not authorized');
+    }
+    //decoded
+    req.user = decoded as JwtPayload;
+
+    next();
   });
 };
 

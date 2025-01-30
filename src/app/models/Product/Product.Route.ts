@@ -6,12 +6,13 @@ import {
   updateProductValidationSchema,
 } from './Product.Validation';
 import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../users/User.Constant';
 
 const router = express.Router();
 //post a book
 router.post(
   '/products',
-    auth(),
+    auth(USER_ROLE.admin),
   validateRequest(productValidationSchema),
 
   productControllers.createBook,

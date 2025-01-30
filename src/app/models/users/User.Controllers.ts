@@ -5,11 +5,8 @@ import { UserService } from './User.Services';
 
 const createUser = catchAsync(async (req, res) => {
   const userData = req.body;
-  console.log(userData);
 
   const result = await UserService.createUserIntoDB(userData);
-
-  console.log(result);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -19,6 +16,18 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+const getAllUsers = catchAsync(async (req, res) => {
+  console.log(req.user);
+  const users = await UserService.getAllUsers()
+  sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: 'Users retrieved successfully',
+      data: users,
+  })
+})
+
 export const UserControllers = {
   createUser,
+  getAllUsers
 };

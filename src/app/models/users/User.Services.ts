@@ -10,7 +10,7 @@ const createUserIntoDB = async (user: TUser) => {
   if (existingUser) {
     throw new AppError(
       StatusCodes.BAD_REQUEST,
-      'A user with this email already exists.'
+      'A user with this email already exists.',
     );
   }
 
@@ -18,4 +18,9 @@ const createUserIntoDB = async (user: TUser) => {
   return await UserModel.create(user);
 };
 
-export const UserService = { createUserIntoDB };
+const getAllUsers = async () => {
+  const result = UserModel.find();
+  return result;
+};
+
+export const UserService = { createUserIntoDB, getAllUsers };
