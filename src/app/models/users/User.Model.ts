@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import config from '../../config';
 import { TUser, UserModelInterface } from './User.Interface';
 
-
 // Extend TUser with Mongoose Document to include Mongoose-specific methods
 interface IUserDocument extends TUser, Document {
   // eslint-disable-next-line no-unused-vars

@@ -1,21 +1,25 @@
-import Joi from 'joi';
+import { z } from 'zod';
 
-const loginValidationSchema = Joi.object({
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .required()
-    .messages({
-      'string.email': 'Please provide a valid email address',
-      'string.empty': 'Email cannot be empty',
-      'any.required': 'Email is required',
+const loginValidationSchema = z.object({
+  body: z.object({
+    email: z
+      .string()
+      .email({ message: 'Please provide a valid email address' }),
+    password: z
+      .string()
+      .min(6, { message: 'Password must be at least 6 characters long' }),
+  }),
+});
+
+const refreshTokenValidationSchema = z.object({
+  cookies: z.object({
+    refreshToken: z.string({
+      required_error: 'Refresh token is required!',
     }),
-  password: Joi.string().min(6).required().messages({
-    'string.empty': 'Password cannot be empty',
-    'string.min': 'Password must be at least 6 characters long',
-    'any.required': 'Password is required',
   }),
 });
 
 export const AuthValidation = {
   loginValidationSchema,
+  refreshTokenValidationSchema,
 };

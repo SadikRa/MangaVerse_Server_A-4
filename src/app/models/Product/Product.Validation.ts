@@ -1,78 +1,56 @@
-import Joi from 'joi';
-
-// Validation schema for creating a product
-export const productValidationSchema = Joi.object({
-  id: Joi.string().optional(),
-  title: Joi.string().trim().required().messages({
-    'string.empty': 'Title is required.',
-    'any.required': 'Title is required.',
-  }),
-  author: Joi.string().trim().required().messages({
-    'string.empty': 'Author is required.',
-    'any.required': 'Author is required.',
-  }),
-  image: Joi.array().items(Joi.string().trim()).min(1).required().messages({
-    'array.base': 'Image must be an array of image URLs.',
-    'array.min': 'At least one image is required.',
-    'any.required': 'Image is required.',
-  }),
-  price: Joi.number().min(0).required().messages({
-    'number.base': 'Price must be a number.',
-    'number.min': 'Price must be a positive number.',
-    'any.required': 'Price is required.',
-  }),
-  category: Joi.string()
-    .valid(
-      'Shonen',
-      'Shojo',
-      'Seinen',
-      'Slice of life',
-      'Sports manga',
-      'Josei',
-      'Isekai',
-      'Mecha',
-      'Fantasy',
-      'Sci-Fi',
-      'Horror',
-      'Psychological',
-      'Mystery',
-      'Thriller',
-      'Romance',
-      'Supernatural',
-      'Historical',
-      'Adventure',
-      'Comedy',
-      'Drama'
-    )
-    .required()
-    .messages({
-      'any.only':
-        'Invalid category. Choose from the predefined manga genres.',
-      'any.required': 'Category is required.',
-    }),
-  description: Joi.string().trim().required().messages({
-    'string.empty': 'Description is required.',
-    'any.required': 'Description is required.',
-  }),
-  quantity: Joi.number().min(0).required().messages({
-    'number.base': 'Quantity must be a number.',
-    'number.min': 'Quantity must be at least 0.',
-    'any.required': 'Quantity is required.',
-  }),
-  inStock: Joi.boolean().required().messages({
-    'boolean.base': 'InStock must be a boolean value.',
-    'any.required': 'InStock is required.',
+import { z } from 'zod';
+export const productValidationSchema = z.object({
+  body: z.object({
+    id: z.string().optional(),
+    title: z.string().trim().nonempty({ message: 'Title is required.' }),
+    author: z.string().trim().nonempty({ message: 'Author is required.' }),
+    image: z
+      .array(z.string().trim())
+      .min(1, { message: 'At least one image is required.' }),
+    price: z.number().min(0, { message: 'Price must be a positive number.' }),
+    category: z.enum(
+      [
+        'Shonen',
+        'Shojo',
+        'Seinen',
+        'Slice of life',
+        'Sports manga',
+        'Josei',
+        'Isekai',
+        'Mecha',
+        'Fantasy',
+        'Sci-Fi',
+        'Horror',
+        'Psychological',
+        'Mystery',
+        'Thriller',
+        'Romance',
+        'Supernatural',
+        'Historical',
+        'Adventure',
+        'Comedy',
+        'Drama',
+      ],
+      { message: 'Invalid category. Choose from the predefined manga genres.' },
+    ),
+    description: z
+      .string()
+      .trim()
+      .nonempty({ message: 'Description is required.' }),
+    quantity: z.number().min(0, { message: 'Quantity must be at least 0.' }),
+    inStock: z.boolean(),
   }),
 });
 
-// Validation schema for updating a product
-export const updateProductValidationSchema = Joi.object({
-  price: Joi.number().min(0).optional().messages({
-    'number.base': 'Price must be a number.',
-    'number.min': 'Price must be a positive number.',
-  }),
-  quantity: Joi.number().min(0).optional().messages({
-    'number.base': 'Quantity must be a number.',
-    'number.min': 'Quantity must be at least 0.',
+export const updateProductValidationSchema = z.object({
+  body: z.object({
+    price: z
+      .number()
+      .min(0, { message: 'Price must be a positive number.' })
+      .optional(),
+    quantity: z
+      .number()
+      .min(0, { message: 'Quantity must be at least 0.' })
+      .optional(),
   }),
 });

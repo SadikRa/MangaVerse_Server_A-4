@@ -1,4 +1,4 @@
-import { orderValidationSchema } from './orderValidation';
+import { orderValidationSchema } from './Order.Validation';
 import { OrderServices } from './Order.Services';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
