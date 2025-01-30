@@ -11,6 +11,11 @@ export const productValidationSchema = Joi.object({
     'string.empty': 'Author is required.',
     'any.required': 'Author is required.',
   }),
+  image: Joi.array().items(Joi.string().trim()).min(1).required().messages({
+    'array.base': 'Image must be an array of image URLs.',
+    'array.min': 'At least one image is required.',
+    'any.required': 'Image is required.',
+  }),
   price: Joi.number().min(0).required().messages({
     'number.base': 'Price must be a number.',
     'number.min': 'Price must be a positive number.',
@@ -37,12 +42,12 @@ export const productValidationSchema = Joi.object({
       'Historical',
       'Adventure',
       'Comedy',
-      'Drama',
+      'Drama'
     )
     .required()
     .messages({
       'any.only':
-        'Category must be one of Fiction, Science, SelfDevelopment, Poetry, or Religious.',
+        'Invalid category. Choose from the predefined manga genres.',
       'any.required': 'Category is required.',
     }),
   description: Joi.string().trim().required().messages({

@@ -21,10 +21,10 @@ app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 // Application routes
 
 //product
-app.use('/api/product', ProductRoutes);
+app.use('/api', ProductRoutes);
 
 // order
-app.use('/api/order', OrderRoutes);
+app.use('/api', OrderRoutes);
 
 //users
 app.use('/api/users', UserRouters);

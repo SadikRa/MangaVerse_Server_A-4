@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
+import { Product } from './Product.Interface';
 
-const productSchema = new Schema(
+const productSchema = new Schema<Product>(
   {
     id: {
       type: String,
@@ -15,6 +16,10 @@ const productSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    image: {
+      type: [String],
+      required: true,
     },
     price: {
       type: Number,

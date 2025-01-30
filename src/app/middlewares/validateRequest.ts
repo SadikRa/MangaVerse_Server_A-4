@@ -10,3 +10,4 @@ const validateRequest = (schema: Joi.ObjectSchema) => {
 };
 
 export default validateRequest;
+ 
