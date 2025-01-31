@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import { TUser } from './User.Interface';
 import { UserModel } from './User.Model';
 import AppError from '../../errors/AppError';
+import { userSearchableFields } from './User.Constant';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 const createUserIntoDB = async (user: TUser) => {
   // Check if user already exists
@@ -18,9 +20,17 @@ const createUserIntoDB = async (user: TUser) => {
   return await UserModel.create(user);
 };
 
-const getAllUsers = async () => {
-  const result = UserModel.find();
-  return result;
+const getAllUsers = async (query: Record<string, unknown>) => {
+  const userQuery = new QueryBuilder(UserModel.find({ role: 'user' }), query)
+    .search(userSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await userQuery.modelQuery;
+  const meta = await userQuery.countTotal();
+  return { result, meta };
 };
 
 export const UserService = { createUserIntoDB, getAllUsers };
