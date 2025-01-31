@@ -25,12 +25,19 @@ router.get(
   OrderControllers.getSingleOrderById,
 );
 
+//change status
+router.patch(
+  '/orders/change-status',
+  auth(USER_ROLE.admin),
+  OrderControllers.changeOrderStatus,
+);
+
 //delete order
-// router.delete(
-//   '/:order_id',
-//   auth(USER_ROLE.admin),
-//   OrderControllers.deleteOrder,
-// );
+router.delete(
+  '/orders/:id',
+  auth(USER_ROLE.admin),
+  OrderControllers.deleteOrder,
+);
 
 // calculate revenue orders
 router.get('/orders/revenue', OrderControllers.CalculateRevenueOrders);
