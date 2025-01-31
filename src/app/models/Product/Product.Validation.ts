@@ -39,6 +39,7 @@ export const productValidationSchema = z.object({
       .nonempty({ message: 'Description is required.' }),
     quantity: z.number().min(0, { message: 'Quantity must be at least 0.' }),
     inStock: z.boolean(),
+    isDeleted: z.boolean().default(false).optional(),
   }),
 });
 

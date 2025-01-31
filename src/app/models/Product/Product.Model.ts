@@ -66,6 +66,10 @@ const productSchema = new Schema<Product>(
       type: Boolean,
       required: true,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );

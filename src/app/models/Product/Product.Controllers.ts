@@ -19,7 +19,7 @@ const createBook = catchAsync(async (req, res) => {
 
 // Get all books
 const GetAllBook = catchAsync(async (req, res) => {
-  const result = await ProductServices.getAllBooksFromDB();
+  const result = await ProductServices.getAllBooksFromDB(req.query);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -31,8 +31,7 @@ const GetAllBook = catchAsync(async (req, res) => {
 
 // Get a single book
 const GetABook = catchAsync(async (req, res) => {
-  const { productId } = req.params;
-  const result = await ProductServices.getABookFromDB(productId);
+  const result = await ProductServices.getABookFromDB(req.params.id);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,

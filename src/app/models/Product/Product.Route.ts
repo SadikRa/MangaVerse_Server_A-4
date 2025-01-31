@@ -27,12 +27,12 @@ router.get('/products/:productId', productControllers.GetABook);
 //update a book
 router.put(
   '/products/:productId',
-
+  auth(USER_ROLE.admin),
   validateRequest(updateProductValidationSchema),
   productControllers.UpdateABook,
 );
 
 //delete a book
-router.delete('/products/:productId', productControllers.deleteABook);
+router.delete('/products/:productId', auth(USER_ROLE.admin), productControllers.deleteABook);
 
 export const ProductRoutes = router;
