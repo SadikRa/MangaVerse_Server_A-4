@@ -31,7 +31,8 @@ const GetAllBook = catchAsync(async (req, res) => {
 
 // Get a single book
 const GetABook = catchAsync(async (req, res) => {
-  const result = await ProductServices.getABookFromDB(req.params.id);
+  const { productId } = req.params;
+  const result = await ProductServices.getABookFromDB(productId);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,

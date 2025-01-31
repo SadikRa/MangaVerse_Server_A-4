@@ -1,4 +1,3 @@
-import { orderValidationSchema } from './Order.Validation';
 import { OrderServices } from './Order.Services';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -6,17 +5,6 @@ import { StatusCodes } from 'http-status-codes';
 
 // Order a book
 const OrderABook = catchAsync(async (req, res) => {
-  // Validate request body
-  const { error } = orderValidationSchema.validate(req.body);
-  if (error) {
-    return sendResponse(res, {
-      statusCode: StatusCodes.BAD_REQUEST,
-      success: false,
-      message: 'Validation failed',
-      data: error.details,
-    });
-  }
-
   const orderData = req.body;
   const result = await OrderServices.OrderABook(orderData);
 
@@ -25,6 +13,32 @@ const OrderABook = catchAsync(async (req, res) => {
     success: true,
     message: 'Order created successfully',
     data: result,
+  });
+});
+
+///get all order
+const getAllOrders = catchAsync(async (req, res) => {
+  const orders = req?.query;
+  const result = await OrderServices.getAllOrder(orders);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Orders retrieved successfully',
+    data: result,
+  });
+});
+
+///get single order
+const getSingleOrderById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const order = await OrderServices.getSingleOrderById(id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Order retrieved successfully',
+    data: order,
   });
 });
 
@@ -43,4 +57,6 @@ const CalculateRevenueOrders = catchAsync(async (req, res) => {
 export const OrderControllers = {
   OrderABook,
   CalculateRevenueOrders,
+  getAllOrders,
+  getSingleOrderById,
 };

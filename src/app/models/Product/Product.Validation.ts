@@ -4,9 +4,7 @@ export const productValidationSchema = z.object({
     id: z.string().optional(),
     title: z.string().trim().nonempty({ message: 'Title is required.' }),
     author: z.string().trim().nonempty({ message: 'Author is required.' }),
-    image: z
-      .array(z.string().trim())
-      .min(1, { message: 'At least one image is required.' }),
+    image: z.string().trim().min(1, { message: ' image is required.' }),
     price: z.number().min(0, { message: 'Price must be a positive number.' }),
     category: z.enum(
       [
