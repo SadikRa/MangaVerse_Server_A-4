@@ -5,6 +5,7 @@ import { UserModel } from '../users/User.Model';
 import { TLoginUser } from './Auth.Interface';
 import config from '../../config';
 import { createToken } from './Auth.Utils';
+import bcrypt from 'bcrypt';
 
 const loginUser = async (payload: TLoginUser) => {
   // Check if the payload contains the required fields
@@ -67,6 +68,54 @@ const loginUser = async (payload: TLoginUser) => {
   };
 };
 
+//change password
+const changePassword = async (
+  userData: JwtPayload,
+  payload: { oldPassword: string; newPassword: string },
+) => {
+  // Use `userData.email` instead of `payload.email`
+  const user = await UserModel.isUserExistsByEmail(userData.email);
+
+  if (!user) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+
+  // Check if the user is deleted
+  if (user?.isDeleted) {
+    throw new AppError(StatusCodes.FORBIDDEN, 'This user is deleted');
+  }
+
+  // Check if the user is blocked
+  if (user?.isBlocked) {
+    throw new AppError(StatusCodes.FORBIDDEN, 'This user is blocked');
+  }
+
+  // Check if the old password is correct
+  if (
+    !(await UserModel.isUserPasswordMatch(payload.oldPassword, user?.password))
+  ) {
+    throw new AppError(StatusCodes.FORBIDDEN, 'Password does not match');
+  }
+
+  // Hash new password
+  const newHashedPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  await UserModel.findOneAndUpdate(
+    { email: userData.email, role: userData.role },
+    {
+      password: newHashedPassword,
+      needsPasswordChange: false,
+      passwordChangedAt: new Date(),
+    },
+  );
+
+  return null;
+};
+
+///refreshToken
 const refreshToken = async (token: string) => {
   if (!token) {
     throw new AppError(StatusCodes.UNAUTHORIZED, 'you are UNAUTHORIZED');
@@ -118,5 +167,6 @@ const refreshToken = async (token: string) => {
 
 export const AuthServices = {
   loginUser,
+  changePassword,
   refreshToken,
 };

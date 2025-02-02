@@ -4,6 +4,8 @@ import sendResponse from '../../utils/sendResponse';
 import { AuthServices } from './Auth.Service';
 import config from '../../config';
 
+
+///login user
 const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
 
@@ -24,6 +26,21 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+//change password
+const changePassword = catchAsync(async (req, res) => {
+  const { ...passwordData } = req.body;
+
+  const result = await AuthServices.changePassword(req.user, passwordData);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Password is updated succesfully!',
+    data: result,
+  });
+});
+
+
+//refreshESGToken 
 const refreshToken = catchAsync(async (req, res) => {
   const { refreshToken } = req.cookies;
   const result = await AuthServices.refreshToken(refreshToken);
@@ -38,5 +55,6 @@ const refreshToken = catchAsync(async (req, res) => {
 
 export const AuthControllers = {
   loginUser,
+  changePassword,
   refreshToken,
 };
