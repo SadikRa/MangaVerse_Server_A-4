@@ -6,7 +6,11 @@ import { paymentService } from './Payment.Services';
 
 const createPaymentIntent = catchAsync(async (req, res) => {
   const user = req.user;
-  const order = await paymentService.createPaymentIntent(user, req.body, req.ip!);
+  const order = await paymentService.createPaymentIntent(
+    user,
+    req.body,
+    req.ip!,
+  );
 
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
@@ -17,7 +21,9 @@ const createPaymentIntent = catchAsync(async (req, res) => {
 });
 
 const verifyPayment = catchAsync(async (req, res) => {
-  const order = await paymentService.verifyPayment(req.query.order_id as string);
+  const order = await paymentService.verifyPayment(
+    req.query.order_id as string,
+  );
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,

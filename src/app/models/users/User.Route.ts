@@ -17,4 +17,6 @@ router.post(
 
 router.get('/', auth(USER_ROLE.admin), UserControllers.getAllUsers);
 
+router.get('/:email', auth(USER_ROLE.user), UserControllers.getASingleUser)
+
 export const UserRouters = router;

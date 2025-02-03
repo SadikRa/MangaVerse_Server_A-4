@@ -33,4 +33,9 @@ const getAllUsers = async (query: Record<string, unknown>) => {
   return { result, meta };
 };
 
-export const UserService = { createUserIntoDB, getAllUsers };
+const getASingleUser = async (email: string) => {
+  const result = UserModel.findOne({ email });
+  return result;
+};
+
+export const UserService = { createUserIntoDB, getAllUsers, getASingleUser };
