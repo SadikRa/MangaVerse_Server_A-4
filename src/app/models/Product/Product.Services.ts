@@ -38,13 +38,14 @@ const getABookFromDB = async (_id: string) => {
 };
 
 //update a book
-const UpdateABook = async (_id: string, book: Partial<Product>) => {
-  const product = await ProductModel.findOne({ _id, isDeleted: false });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const UpdateABook = async (id: string, book: any) => {
+  const product = await ProductModel.findOne({ _id: id, isDeleted: false });
   if (!product) {
     throw new AppError(StatusCodes.NOT_FOUND, 'product Not Found');
   }
 
-  const result = await ProductModel.findByIdAndUpdate(_id, book, {
+  const result = await ProductModel.findByIdAndUpdate(id, book, {
     new: true,
     runValidators: true,
   });
@@ -52,13 +53,18 @@ const UpdateABook = async (_id: string, book: Partial<Product>) => {
 };
 
 //delete a book
-const deleteABook = async (_id: string) => {
-  const product = await ProductModel.findOne({ _id, isDeleted: false });
+const deleteABook = async (id: string) => {
+  const product = await ProductModel.findOne({ _id: id, isDeleted: false });
   if (!product) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'product Not Found');
+    throw new AppError(StatusCodes.NOT_FOUND, 'Product Not Found');
   }
 
-  const result = await ProductModel.findOneAndDelete({ _id });
+  const result = await ProductModel.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
+
   return result;
 };
 

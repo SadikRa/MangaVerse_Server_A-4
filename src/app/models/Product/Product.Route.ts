@@ -12,7 +12,7 @@ const router = express.Router();
 //post a book
 router.post(
   '/products',
-    auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin),
   validateRequest(productValidationSchema),
 
   productControllers.createBook,
@@ -22,17 +22,21 @@ router.post(
 router.get('/products', productControllers.GetAllBook);
 
 //get a book
-router.get('/products/:productId', productControllers.GetABook);
+router.get('/products/:id', productControllers.GetABook);
 
 //update a book
-router.put(
-  '/products/:productId',
+router.patch(
+  '/products/:id',
   auth(USER_ROLE.admin),
   validateRequest(updateProductValidationSchema),
   productControllers.UpdateABook,
 );
 
 //delete a book
-router.delete('/products/:productId', auth(USER_ROLE.admin), productControllers.deleteABook);
+router.delete(
+  '/products/:id',
+  auth(USER_ROLE.admin),
+  productControllers.deleteABook,
+);
 
 export const ProductRoutes = router;

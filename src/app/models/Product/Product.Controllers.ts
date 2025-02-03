@@ -1,4 +1,3 @@
-import Joi from 'joi';
 import { ProductServices } from './Product.Services';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -31,8 +30,8 @@ const GetAllBook = catchAsync(async (req, res) => {
 
 // Get a single book
 const GetABook = catchAsync(async (req, res) => {
-  const { productId } = req.params;
-  const result = await ProductServices.getABookFromDB(productId);
+  const { id } = req.params;
+  const result = await ProductServices.getABookFromDB(id);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -44,9 +43,9 @@ const GetABook = catchAsync(async (req, res) => {
 
 // Update a book
 const UpdateABook = catchAsync(async (req, res) => {
-  const { productId } = req.params;
+  const { id } = req.params;
   const book = req.body;
-  const result = await ProductServices.UpdateABook(productId, book);
+  const result = await ProductServices.UpdateABook(id, book);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -57,21 +56,10 @@ const UpdateABook = catchAsync(async (req, res) => {
 });
 
 // Delete a book
-const idValidationSchema = Joi.string().required();
 const deleteABook = catchAsync(async (req, res) => {
-  const { productId } = req.params;
+  const { id } = req.params;
 
-  const { error } = idValidationSchema.validate(productId);
-  if (error) {
-    return sendResponse(res, {
-      statusCode: StatusCodes.BAD_REQUEST,
-      success: false,
-      message: 'Validation failed',
-      data: error.details,
-    });
-  }
-
-  const result = await ProductServices.deleteABook(productId);
+  const result = await ProductServices.deleteABook(id);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
