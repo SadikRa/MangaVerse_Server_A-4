@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: 'https://manga-verse-chi.vercel.app', credentials: true }));
 
 // Application routes
 

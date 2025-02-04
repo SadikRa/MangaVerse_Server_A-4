@@ -26,7 +26,7 @@ router.get('/products/:id', productControllers.GetABook);
 
 //update a book
 router.patch(
-  '/products/:id',
+  '/products/update/:id',
   auth(USER_ROLE.admin),
   validateRequest(updateProductValidationSchema),
   productControllers.UpdateABook,
