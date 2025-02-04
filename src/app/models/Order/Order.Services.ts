@@ -69,8 +69,8 @@ const getAOrderById = async (id: string) => {
 };
 
 //get a single order by email
-const getSingleOrderByEmail = async (email: string) => {
-  const order = await OrderModel.findOne({ email }).populate('product');
+const getOrderByEmail = async (email: string) => {
+  const order = await OrderModel.find({ email }).populate('product');
   if (!order) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Order Not Found');
   }
@@ -127,7 +127,7 @@ export const OrderServices = {
   OrderABook,
   getAllOrder,
   CalculateRevenueOrders,
-  getSingleOrderByEmail,
+  getOrderByEmail,
   getAOrderById,
   updateOrderStatus,
   deleteOrder,

@@ -46,9 +46,9 @@ const getAOrderById = catchAsync(async (req, res) => {
 });
 
 ///get single order my email
-const getSingleOrderByEmail = catchAsync(async (req, res) => {
+const getOrderByEmail = catchAsync(async (req, res) => {
   const { email } = req.params;
-  const result = await OrderServices.getSingleOrderByEmail(email);
+  const result = await OrderServices.getOrderByEmail(email);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -106,7 +106,7 @@ export const OrderControllers = {
   OrderABook,
   CalculateRevenueOrders,
   getAllOrders,
-  getSingleOrderByEmail,
+  getOrderByEmail,
   deleteOrder,
   updateOrderStatus,
   getAOrderById,

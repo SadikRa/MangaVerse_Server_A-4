@@ -22,7 +22,7 @@ router.get('/orders', auth(USER_ROLE.admin), OrderControllers.getAllOrders);
 router.get(
   '/orders/email/:email',
   auth(USER_ROLE.admin, USER_ROLE.user),
-  OrderControllers.getSingleOrderByEmail,
+  OrderControllers.getOrderByEmail,
 );
 
 //by id

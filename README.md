@@ -1,101 +1,158 @@
-"# l2-a2-book-shop-api"
+MangaVerse 📚🎴
 
-# BookShop API
+MangaVerse is an online manga shop where users can explore, purchase, and manage their manga collections. The platform offers seamless navigation, secure payments, and an admin dashboard for managing products, users, and orders.
+🔗 Live Demo
 
-BookShop API is a simple RESTful API books in a bookshop. It allows you to perform CRUD (Create, Read, Update, Delete) operations on books and manage their stock and details.
+🔗 MangaVerse Deployment Link (Add your deployed link here)
+Features
 
----
+Browse and buy manga by category
+User authentication and authorization
+Secure payment integration (SurjoPay)
+Admin panel for managing products, users, and orders
+User order management
+Fully responsive UI with modern design
 
-## Features
+Folder Structure
 
-Implement CRUD operations in the controller.
+MangaVerse/
+│── client/ # Frontend (React, Vite)
+│ ├── src/
+│ │ ├── assets/ # Static assets (images, icons)
+│ │ ├── components/ # Reusable UI components
+│ │ ├── hooks/ # Custom hooks
+│ │ ├── pages/ # App pages
+│ │ ├── redux/ # Redux store & API calls
+│ │ ├── types/ # TypeScript types
+│ │ ├── utils/ # Helper functions
+│ │ ├── App.tsx # Main app file
+│ │ ├── main.tsx # Entry point
+│ ├── public/ # Public files
+│ ├── index.html # Main HTML file
+│ ├── package.json # Dependencies
+│
+│── server/ # Backend (Node.js, Express, MongoDB)
+│ ├── src/
+│ │ ├── config/ # Configuration files (DB, env)
+│ │ ├── controllers/ # Route controllers
+│ │ ├── middlewares/ # Middleware functions
+│ │ ├── models/ # Mongoose models
+│ │ ├── routes/ # API routes
+│ │ ├── utils/ # Utility functions
+│ │ ├── server.ts # Main backend entry
+│ ├── package.json # Backend dependencies
+│
+│── README.md # Project documentation
+│── .gitignore # Files to ignore in Git
 
-- Books Management
-Create a new book.
-Read details of a specific book or all books.
-Update book details
-Delete a book from the inventory.
-- Order Management
-Order a Book: Deducts stock quantity and updates inStock status.
-Calculate Revenue: Computes the total revenue from all orders using aggregation.
+Installation Guide
 
----
+Clone the repository
 
-## Technologies Used
+    git clone https://github.com/SadikRa/MangaVerse_Server_A-4.git
 
-- **Node.js** with **Express.js**
-- **MongoDB** with **Mongoose**
-- **TypeScript**
-- **eslint**
-- **prettier**
-- **dotenv**
-- **cors**
-- **joi**
+Backend Setup
 
+cd server
+npm install
+npm run dev
 
----
+Frontend Setup
 
-## install link
+cd client
+npm install
+npm run dev
 
-- node -v
-- npm -v
-- npm install express
-- npm install mongoose
-- npm install -g typescript
-- tsc --init
-- npm install --save-dev prettier
-- npm install dotenv
-- npm install cors
-- npm i joi
+Installed NPM Packages
+Frontend (Client Side)
 
-### Project Structure
+"@reduxjs/toolkit": "^1.9.5",
+"axios": "^1.3.5",
+"daisyui": "^3.6.0",
+"react": "^18.2.0",
+"react-dom": "^18.2.0",
+"react-icons": "^4.8.0",
+"react-redux": "^8.1.1",
+"react-router-dom": "^6.14.2",
+"react-scroll-parallax": "^3.2.1",
+"react-toastify": "^9.1.1",
+"swiper": "^9.4.1",
+"tailwindcss": "^3.3.3",
+"typescript": "^5.1.6",
+"vite": "^4.3.9"
 
-l2-a2-book-shop-api/
-├── src/
-│       ├── app/
-│   │   ├── models/
-│   │      ├── bookShop/
-│   │      │   ├── bookShopRoutes/          
-│   │      │   ├── bookShopInterface/          
-│   │      │   ├── bookShopModel/          
-│   │      │   ├── bookShopControllers/    
-│   │      │   ├── bookShopServices/        
-│   │      │   ├── validation/        
-│   │                         
-│   ├── ErrorFile/                           
-│   ├── index.ts                             
-├── .env                                     
-├── tsconfig.json                           
-├── package.json                           
+Backend (Server Side)
 
+"bcryptjs": "^2.4.3",
+"cors": "^2.8.5",
+"dotenv": "^16.3.1",
+"express": "^4.18.2",
+"express-async-handler": "^1.2.0",
+"jsonwebtoken": "^9.0.1",
+"mongoose": "^7.3.2",
+"multer": "^1.4.5-lts.1",
+"zod": "^3.21.4"
 
+🛠 API Endpoints
+Authentication
+Method Endpoint Description
+POST /api/auth/signup User registration
+POST /api/auth/login User login
+GET /api/auth/me Get current user profile
+User Management
+Method Endpoint Description
+GET /api/users/ Get all users (Admin only)
+GET /api/users/:id Get user by ID
+PATCH /api/users/:id Update user profile
+DELETE /api/users/:id Delete user (Admin only)
+Product Management
+Method Endpoint Description
+GET /api/products/ Get all products
+GET /api/products/:id Get product by ID
+POST /api/products/ Add new product (Admin)
+PATCH /api/products/:id Update product (Admin)
+DELETE /api/products/:id Delete product (Admin)
+Order Management
+Method Endpoint Description
+GET /api/orders/ Get all orders (Admin)
+GET /api/orders/email/:email Get user orders
+POST /api/orders/ Create new order
+PATCH /api/orders/:id Update order status
+DELETE /api/orders/:id Delete order
+Payment (SurjoPay)
+Method Endpoint Description
+POST /api/payment/initiate Initiate payment
+GET /api/payment/status Check payment status
+Environment Variables (.env)
 
-## API Endpoints
+Create a .env file in the server directory and add:
 
-- Books
-POST /api/products - Create a new book.
-GET /api/products - Retrieve all books.
-GET /api/products/:productId - Retrieve a specific book.
-PUT /api/products/:productId - Update a specific book.
-DELETE /api/products/:productId - Delete a specific book.
-- Orders
-POST /api/orders - Place an order for a book.
-GET /api/orders/revenue - Calculate total revenue.
+PORT=5000
+MONGO_URI=your_mongo_connection_string
+JWT_SECRET=your_jwt_secret
+SURJOPAY_API_KEY=your_surjopay_key
 
-### gitHub link
+Roles & Permissions
+Role Permissions
+Admin Manage users, products, orders
+User Browse & order manga
+Deployment Guide
+Backend Deployment (Vercel / Render)
 
-Clone the repository:
+    Push your server code to GitHub
+    Connect your GitHub repo to Vercel or Render
+    Set environment variables (.env) in the settings
+    Deploy
 
-```bash
-git clone https://github.com/SadikRa/l2-a2-book-shop-api
+Frontend Deployment (Vercel / Netlify)
 
-```
+    Push your client code to GitHub
+    Connect your repo to Vercel or Netlify
+    Set the VITE_BACKEND_URL environment variable
+    Deploy
 
-## For deployment 
- - Vercel
- ```bash
- npm i -g vercel
-```
- - vercel --prod
+Contact & Support
 
-- my vercel vercel deploy server link:   https://l2-a2-book-shop-api.vercel.app/"# MangaVerse_Server_A-4" 
+Email: sadikrahman494@gmail.com
+Website: your-website.com
+Enjoy reading & shopping on MangaVerse!

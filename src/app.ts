@@ -8,6 +8,7 @@ import { OrderRoutes } from './app/models/Order/Order.Route';
 import { UserRouters } from './app/models/users/User.Route';
 import notFound from './app/middlewares/notFound';
 import { AuthRouters } from './app/models/Auth/Auth.Route';
+import { PaymentRoutes } from './app/models/payment/Payment.Route';
 
 const app: Application = express();
 
@@ -31,6 +32,9 @@ app.use('/api/users', UserRouters);
 
 //auth
 app.use('/api/auth', AuthRouters);
+
+//auth
+app.use('/api/payment', PaymentRoutes);
 
 // Default route
 app.get('/', (req: Request, res: Response) => {
