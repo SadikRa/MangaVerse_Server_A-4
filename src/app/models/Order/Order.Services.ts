@@ -9,7 +9,10 @@ import { JwtPayload } from 'jsonwebtoken';
 //order a book
 const OrderABook = async (order: Order, user: JwtPayload) => {
   if (order.email !== user.email) {
-    throw new AppError(StatusCodes.FORBIDDEN, "You can't create an order for another customer.");
+    throw new AppError(
+      StatusCodes.FORBIDDEN,
+      "You can't create an order for another customer.",
+    );
   }
 
   const product = await ProductModel.findById(order.product);
@@ -18,7 +21,10 @@ const OrderABook = async (order: Order, user: JwtPayload) => {
   }
 
   if (product.quantity < order.quantity) {
-    throw new AppError(StatusCodes.BAD_REQUEST, 'Insufficient stock available.');
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      'Insufficient stock available.',
+    );
   }
 
   const totalPrice = order.quantity * product.price;
@@ -52,9 +58,19 @@ const getAllOrder = async (query: Record<string, unknown>) => {
   return { result, meta };
 };
 
-//get a single order
-const getSingleOrderById = async (_id: string) => {
-  const order = await OrderModel.findOne({ _id }).populate('product');
+//get a single order by id
+
+const getAOrderById = async (id: string) => {
+  const result = await OrderModel.findById(id);
+  if (!result) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Order Not Found');
+  }
+  return result;
+};
+
+//get a single order by email
+const getSingleOrderByEmail = async (email: string) => {
+  const order = await OrderModel.findOne({ email }).populate('product');
   if (!order) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Order Not Found');
   }
@@ -62,9 +78,9 @@ const getSingleOrderById = async (_id: string) => {
 };
 
 ///change status
-const changeOrderStatus = async (_id: string, status: string) => {
+const updateOrderStatus = async (id: string, status: string) => {
   const order = await OrderModel.findOneAndUpdate(
-    { _id: _id },
+    { _id: id },
     { status },
     { new: true },
   );
@@ -77,18 +93,20 @@ const changeOrderStatus = async (_id: string, status: string) => {
 };
 
 //delete order
-
 const deleteOrder = async (_id: string) => {
-  const order = await OrderModel.findOne({
-    _id,
-    is_deleted: true,
-  });
-  if (!order) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'order Not Found');
+  if (!_id) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Invalid order ID');
   }
 
-  const result = await OrderModel.findOneAndDelete({ _id });
-  return result;
+  // Find order by ID
+  const order = await OrderModel.findById(_id);
+  if (!order) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Order Not Found');
+  }
+
+  // Delete the order
+  const deletedOrder = await OrderModel.findByIdAndDelete(_id);
+  return deletedOrder;
 };
 
 //Calculate Revenue Orders
@@ -109,7 +127,8 @@ export const OrderServices = {
   OrderABook,
   getAllOrder,
   CalculateRevenueOrders,
-  getSingleOrderById,
-  changeOrderStatus,
+  getSingleOrderByEmail,
+  getAOrderById,
+  updateOrderStatus,
   deleteOrder,
 };

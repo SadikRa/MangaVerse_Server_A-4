@@ -16,7 +16,7 @@ const PaymentSchema = new Schema<TPayment>(
     totalPrice: { type: Number, required: true },
     payment_gateway_data: { type: Schema.Types.Mixed, default: {} },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const PaymentModel = model<TPayment>('Payment', PaymentSchema);

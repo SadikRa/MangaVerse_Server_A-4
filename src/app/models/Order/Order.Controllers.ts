@@ -2,6 +2,7 @@ import { OrderServices } from './Order.Services';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { StatusCodes } from 'http-status-codes';
+import AppError from '../../errors/AppError';
 
 // Order a book
 const OrderABook = catchAsync(async (req, res) => {
@@ -30,10 +31,24 @@ const getAllOrders = catchAsync(async (req, res) => {
   });
 });
 
-///get single order
-const getSingleOrderById = catchAsync(async (req, res) => {
+///get single order my id
+
+const getAOrderById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await OrderServices.getSingleOrderById(id);
+  const result = await OrderServices.getAOrderById(id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Order retrieved successfully',
+    data: result,
+  });
+});
+
+///get single order my email
+const getSingleOrderByEmail = catchAsync(async (req, res) => {
+  const { email } = req.params;
+  const result = await OrderServices.getSingleOrderByEmail(email);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -44,22 +59,28 @@ const getSingleOrderById = catchAsync(async (req, res) => {
 });
 
 ///change status
-const changeOrderStatus = catchAsync(async (req, res) => {
-  const { _id } = req.params;
+const updateOrderStatus = catchAsync(async (req, res) => {
+  const { id } = req.params;
   const { status } = req.body;
-  const result = await OrderServices.changeOrderStatus(_id, status);
+
+  const result = await OrderServices.updateOrderStatus(id, status);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'Order status change successfully',
+    message: "Order status changed successfully",
     data: result,
   });
 });
 
 //delete order
 const deleteOrder = catchAsync(async (req, res) => {
-  const result = await OrderServices.deleteOrder(req.params?.id);
+  const { id } = req.params;
+  if (!id) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Order ID is required');
+  }
+
+  const result = await OrderServices.deleteOrder(id);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -85,7 +106,8 @@ export const OrderControllers = {
   OrderABook,
   CalculateRevenueOrders,
   getAllOrders,
-  getSingleOrderById,
+  getSingleOrderByEmail,
   deleteOrder,
-  changeOrderStatus,
+  updateOrderStatus,
+  getAOrderById,
 };

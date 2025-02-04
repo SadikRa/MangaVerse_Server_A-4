@@ -35,9 +35,13 @@ export const CreateOrderValidationSchema = z.object({
   }),
 });
 
-
-
+const updateOrderValidationSchema = z.object({
+  body: z.object({
+    status: z.enum(['pending', 'processing', 'done']),
+  }),
+});
 
 export const OrderValidationSchema = {
-  CreateOrderValidationSchema
+  CreateOrderValidationSchema,
+  updateOrderValidationSchema,
 };

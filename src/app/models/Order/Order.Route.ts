@@ -18,18 +18,26 @@ router.post(
 //get all order
 router.get('/orders', auth(USER_ROLE.admin), OrderControllers.getAllOrders);
 
-///get single order by id
+///get single order by email
+router.get(
+  '/orders/email/:email',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  OrderControllers.getSingleOrderByEmail,
+);
+
+//by id
 router.get(
   '/orders/:id',
-  auth(USER_ROLE.admin, USER_ROLE.user),
-  OrderControllers.getSingleOrderById,
+  auth(USER_ROLE.admin),
+  OrderControllers.getAOrderById,
 );
 
 //change status
 router.patch(
-  '/orders/change-status',
+  '/orders/:id/change-status',
   auth(USER_ROLE.admin),
-  OrderControllers.changeOrderStatus,
+  validateRequest(OrderValidationSchema.updateOrderValidationSchema),
+  OrderControllers.updateOrderStatus,
 );
 
 //delete order

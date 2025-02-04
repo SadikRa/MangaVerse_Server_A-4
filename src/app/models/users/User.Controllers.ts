@@ -26,15 +26,15 @@ const getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
-const getASingleUser = catchAsync(async (req: Request, res: Response) => {
-  const { email } = req.params; // Extract email from URL parameters
+const getASingleUser = catchAsync(async (req, res) => {
+  const { email } = req.params;
 
   const result = await UserService.getASingleUser(email);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: "User retrieved successfully",
+    message: 'User retrieved successfully',
     data: result,
   });
 });
